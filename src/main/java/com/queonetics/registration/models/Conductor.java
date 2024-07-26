@@ -7,10 +7,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "tb_conductor")
+@Table(name = "tb_conductors")
 public class Conductor {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
