@@ -1,4 +1,4 @@
-package com.queonetics.registration.models.enums;
+package com.queonetics.registration.messages;
 
 public enum ConductorMessages{
     EXISTING_REGISTRATION("Esta matrícula já existe."),

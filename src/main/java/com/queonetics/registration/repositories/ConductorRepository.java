@@ -1,7 +1,6 @@
 package com.queonetics.registration.repositories;
 
 import com.queonetics.registration.models.Conductor;
-import org.hibernate.annotations.processing.HQL;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

@@ -1,9 +1,8 @@
 package com.queonetics.registration.controllers;
 
 import com.queonetics.registration.handler.ResponseHandler;
-import com.queonetics.registration.models.Conductor;
 import com.queonetics.registration.models.dto.ConductorDTO;
-import com.queonetics.registration.models.enums.ConductorMessages;
+import com.queonetics.registration.messages.ConductorMessages;
 import com.queonetics.registration.services.ConductorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,7 +19,7 @@ public class ConductorController {
     ConductorService conductorService;
 
     @PostMapping
-    public ConductorDTO save(@RequestBody ConductorDTO conductorDTO){
+    public ConductorDTO save(@RequestBody ConductorDTO conductorDTO) {
         return conductorService.save(conductorDTO);
     }
 
@@ -35,12 +34,12 @@ public class ConductorController {
     }
 
     @PutMapping("{id}")
-    public ConductorDTO update(@PathVariable Long id, @RequestBody ConductorDTO conductorDTO){
+    public ConductorDTO update(@PathVariable Long id, @RequestBody ConductorDTO conductorDTO) {
         return conductorService.update(id, conductorDTO);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Object> delete(@PathVariable Long id){
+    public ResponseEntity<Object> delete(@PathVariable Long id) {
         conductorService.delete(id);
         return ResponseHandler.generateResponse(ConductorMessages.SUCCESS_DELETE.getValue(), HttpStatus.OK, null);
     }

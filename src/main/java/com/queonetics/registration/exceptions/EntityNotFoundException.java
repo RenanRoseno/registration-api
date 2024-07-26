@@ -1,4 +1,4 @@
-package com.queonetics.registration.exception;
+package com.queonetics.registration.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
