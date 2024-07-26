@@ -22,7 +22,7 @@ public class ConductorService {
     private final Boolean isVehicle = false;
 
     public ConductorDTO save(ConductorDTO conductorDTO) {
-        if (!conductorRepository.existsRegistration(conductorDTO.getRegistration())) {
+        if (!conductorRepository.existsConductorBYRegistration(conductorDTO.getRegistration())) {
             Conductor entitySaved = conductorRepository.save(conductorDTO.toEntity());
             conductorDTO.setId(entitySaved.getId());
             return conductorDTO;
