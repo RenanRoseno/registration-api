@@ -1,9 +1,9 @@
 package com.queonetics.registration.services;
 
-import com.queonetics.registration.exception.EntityNotFoundException;
+import com.queonetics.registration.exceptions.EntityNotFoundException;
 import com.queonetics.registration.models.Conductor;
 import com.queonetics.registration.models.dto.ConductorDTO;
-import com.queonetics.registration.models.enums.ConductorMessages;
+import com.queonetics.registration.messages.ConductorMessages;
 import com.queonetics.registration.repositories.ConductorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +22,7 @@ public class ConductorService {
     private final Boolean isVehicle = false;
 
     public ConductorDTO save(ConductorDTO conductorDTO) {
-        if (!conductorRepository.existsRegistration(conductorDTO.getRegistration())) {
+        if (!conductorRepository.existsConductorBYRegistration(conductorDTO.getRegistration())) {
             Conductor entitySaved = conductorRepository.save(conductorDTO.toEntity());
             conductorDTO.setId(entitySaved.getId());
             return conductorDTO;
