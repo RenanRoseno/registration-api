@@ -7,10 +7,8 @@ import com.queonetics.registration.services.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -20,7 +18,7 @@ public class VehicleController {
     VehicleService vehicleService;
 
     @PostMapping
-    public VehicleDTO save(@Valid @RequestBody VehicleDTO vehicleDTO) {
+    public VehicleDTO save(@RequestBody VehicleDTO vehicleDTO) {
         return vehicleService.save(vehicleDTO);
     }
 
