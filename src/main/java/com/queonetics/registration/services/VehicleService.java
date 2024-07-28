@@ -41,6 +41,14 @@ public class VehicleService {
         return this.vehicleRepository.findAll().stream().map(VehicleDTO::new).collect(Collectors.toList());
     }
 
+    public VehicleDTO getVehicleByPlate(String plate){
+        this.isValidPlate(plate);
+        Vehicle vehicle = this.vehicleRepository.getVehicleByPlate(plate);
+        if(vehicle != null)
+            return new VehicleDTO(vehicle);
+        return null;
+    }
+
     public VehicleDTO getById(Long id) {
         Optional<Vehicle> optionalVehicle = this.vehicleRepository.findById(id);
         if (optionalVehicle.isPresent()) {
