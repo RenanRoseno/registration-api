@@ -12,4 +12,7 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
 
     @Query(" SELECT v FROM Vehicle v WHERE v.id <> ?1 AND v.plate = ?2 ")
     Vehicle getExistingVehicleExceptId(Long id, String plate);
+
+    @Query(" SELECT v FROM Vehicle v WHERE v.plate = ?1")
+    Vehicle getVehicleByPlate(String plate);
 }

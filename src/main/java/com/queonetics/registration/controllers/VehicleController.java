@@ -23,8 +23,8 @@ public class VehicleController {
     }
 
     @GetMapping
-    public List<VehicleDTO> listAllConductors() {
-        return vehicleService.listAll();
+    public VehicleDTO getVehicleByPlate(@RequestParam String plate) {
+        return vehicleService.getVehicleByPlate(plate);
     }
 
     @GetMapping("{id}")
