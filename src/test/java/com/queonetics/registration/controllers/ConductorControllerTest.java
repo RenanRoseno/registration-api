@@ -2,30 +2,33 @@ package com.queonetics.registration.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.queonetics.registration.models.dto.VehicleDTO;
-import com.queonetics.registration.models.dto.VehicleDTOFixture;
-import com.queonetics.registration.services.VehicleService;
+import com.queonetics.registration.models.dto.ConductorDTO;
+import com.queonetics.registration.models.dto.ConductorDTOFixture;
+import com.queonetics.registration.services.ConductorService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.verifyNoInteractions;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@ExtendWith(MockitoExtension.class)
 public class ConductorControllerTest {
     @InjectMocks
     ConductorController conductorController;
 
     @Mock
-    VehicleService vehicleService;
+    ConductorService conductorService;
 
     private MockMvc mockMvc;
 
@@ -33,21 +36,21 @@ public class ConductorControllerTest {
 
     private String url;
 
-    private VehicleDTO vehicleDTO;
+    private ConductorDTO conductorDTO;
 
     private String json;
 
     @BeforeEach
     void setUp() throws JsonProcessingException {
-        mockMvc = MockMvcBuilders.standaloneSetup(vehicleController).alwaysDo((print())).build();
-        url = "/vehicles";
-        vehicleDTO = VehicleDTOFixture.build(1L, "ABC1G34");
-        json = objectMapper.writeValueAsString(vehicleDTO);
+        mockMvc = MockMvcBuilders.standaloneSetup(conductorController).alwaysDo((print())).build();
+        url = "/conductors";
+        conductorDTO = ConductorDTOFixture.build(1L, "USUÁRIO TEST", "123456789");
+        json = objectMapper.writeValueAsString(conductorDTO);
     }
 
     @Test
-    void mustSaveVehicleSuccess() throws Exception {
-        when(vehicleService.save(vehicleDTO)).thenReturn(vehicleDTO);
+    void mustSaveConductorSuccess() throws Exception {
+        when(conductorService.save(conductorDTO)).thenReturn(conductorDTO);
 
         mockMvc.perform(post(url)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -55,85 +58,74 @@ public class ConductorControllerTest {
                 .content(this.json)
         ).andExpect(status().isOk());
 
-        verify(vehicleService).save(vehicleDTO);
+        verify(conductorService).save(conductorDTO);
     }
 
     @Test
-    void mustNotSaveVehicleException() throws Exception {
+    void mustNotSaveConductorSuccess() throws Exception {
         mockMvc.perform(post(url)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
         ).andExpect(status().isBadRequest());
 
-        verifyNoInteractions(vehicleService);
+        verifyNoInteractions(conductorService);
     }
 
     @Test
-    void mustUpdateVehicleSuccess() throws Exception {
-        when(vehicleService.update(1L, vehicleDTO)).thenReturn(vehicleDTO);
+    void mustUpdateConductorSuccess() throws Exception {
+        when(conductorService.update(1L, conductorDTO)).thenReturn(conductorDTO);
 
-        mockMvc.perform(put("/vehicles/{id}", 1L)
+        mockMvc.perform(put("/conductors/{id}", 1L)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(json)
         ).andExpect(status().isOk());
 
-        verify(vehicleService).update(1L, vehicleDTO);
+        verify(conductorService).update(1L, conductorDTO);
     }
 
     @Test
-    void mustNotUpdateVehicleException() throws Exception {
-        mockMvc.perform(put("/vehicles/{id}", 1L)
+    void mustNotUpdateConductorSuccess() throws Exception {
+        mockMvc.perform(put("/conductors/{id}", 1L)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
         ).andExpect(status().isBadRequest());
 
-        verifyNoInteractions(vehicleService);
+        verifyNoInteractions(conductorService);
     }
 
     @Test
-    void mustGetVehicleSByPlateSuccess() throws Exception {
-        when(vehicleService.getVehicleByPlate("ABC1G34")).thenReturn(vehicleDTO);
+    void mustGetConductorByIdSuccess() throws Exception {
+        when(conductorService.getById(1L)).thenReturn(conductorDTO);
 
-        mockMvc.perform(get(url)
+        mockMvc.perform(get("/conductors/{id}", 1L)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .param("plate", "ABC1G34")
                 .content(json)
         ).andExpect(status().isOk());
 
-        verify(vehicleService).getVehicleByPlate("ABC1G34");
+        verify(conductorService).getById(1L);
     }
 
     @Test
-    void mustNotGetVehicleSByPlateSuccess() throws Exception {
-        mockMvc.perform(get(url)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isBadRequest());
+    void mustDeleteConductor() throws Exception {
+        doNothing().when(conductorService).delete(1L);
 
-        verifyNoInteractions(vehicleService);
-    }
-
-    @Test
-    void mustDeleteVehicle() throws Exception {
-        doNothing().when(vehicleService).delete(1L);
-
-        mockMvc.perform(delete("/vehicles/{id}", 1L)
+        mockMvc.perform(delete("/conductors/{id}", 1L)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
         ).andExpect(status().isOk());
 
-        verify(vehicleService).delete(1L);
+        verify(conductorService).delete(1L);
     }
 
     @Test
-    void mustNotDeleteVehicle() throws Exception {
+    void mustNotDeleteConductor() throws Exception {
         mockMvc.perform(delete(url)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
         ).andExpect(status().isMethodNotAllowed());
 
-        verifyNoInteractions(vehicleService);
+        verifyNoInteractions(conductorService);
     }
 }
